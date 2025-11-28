@@ -113,7 +113,7 @@ docs: add troubleshooting section to README
 
 Common issues users face during Phase 0 setup:
 - Docker permission errors
-- HA discovery failures  
+- HA discovery failures
 - Token generation confusion
 ```
 
@@ -210,7 +210,7 @@ At the **end of every working session**, update `SESSION_LOG.md` in the project 
 - **Anti-pattern Found:** Don't modify brightness and color_temp in separate calls
   - Causes visible flicker. Single atomic update is better.
 
-### Issues Encountered  
+### Issues Encountered
 - HA auto-discovery found lights but wrong area assignments
   - Solution: Manually specified entity_ids in config.yaml for now
   - TODO: Implement proper area-based discovery in Phase 2
@@ -306,6 +306,68 @@ You have a tendency to over-engineer. Fight this urge:
 - ✅ **Do** trust internal code and framework guarantees
 - ✅ **Do** only validate at system boundaries (user input, external APIs)
 
+### Performance, Cost, and Network Efficiency (CRITICAL)
+
+**Always optimize for minimal resource usage when implementing features:**
+
+**API/Network Calls:**
+- ❌ **Never** send continuous API requests when a single command suffices
+- ❌ **Never** implement polling loops when event-driven alternatives exist
+- ✅ **Always** check if hardware/firmware can handle effects locally
+- ✅ **Always** prefer native device capabilities over software emulation
+
+**Examples:**
+```python
+# BAD: 15 seconds of fire flickering = 11 HTTP requests
+for step in range(11):
+    send_api_request(brightness=random(), color=random())
+    sleep(1.5)
+
+# GOOD: 1 HTTP request, device handles animation locally
+activate_dynamic_scene(scene="Fire", dynamic=True)  # Loops indefinitely!
+```
+
+**Cost Optimization:**
+- ❌ **Never** use expensive models for simple tasks
+- ❌ **Never** make redundant LLM calls when results can be cached
+- ✅ **Always** use Haiku for simple/repetitive tasks (10x cheaper than Sonnet)
+- ✅ **Always** batch operations when possible
+- ✅ **Always** check if built-in solutions exist before building custom ones
+
+**Throughput & Scalability:**
+- Consider: Will this work if called 100 times? 1000 times?
+- Consider: What happens if network latency increases?
+- Consider: Can this run offline or with intermittent connectivity?
+- Prefer: Asynchronous operations over blocking calls
+- Prefer: Local computation over cloud API calls when feasible
+
+**When Designing Any Feature, Ask:**
+1. "Can the device/system handle this natively?" (Check docs first!)
+2. "How many API calls does this require?" (Minimize!)
+3. "Does this loop need to run, or can it be event-driven?" (Events > Loops!)
+4. "Am I using the right model for this task?" (Haiku vs Sonnet vs Opus)
+5. "Will this scale if usage increases 10x?" (Design for growth!)
+
+**Smart Home Example:**
+```python
+# BAD: Continuous polling (wasteful)
+while True:
+    if motion_detected():
+        turn_on_lights()
+    sleep(1)  # 86,400 checks per day!
+
+# GOOD: Event-driven (efficient)
+def on_motion_event(event):  # Triggered by sensor
+    turn_on_lights()
+```
+
+**This philosophy applies to ALL systems:**
+- Smart home devices (check Hue/HA capabilities)
+- AI agents (use cheapest model that works)
+- Database queries (index, cache, batch)
+- File operations (stream, don't load everything)
+- External APIs (check rate limits, use webhooks)
+
 ### Write for Humans First
 
 Code is read more than it's written:
@@ -319,18 +381,18 @@ def proc_sc(r, ct, b):
 def create_hue_command(room: str, color_temp_kelvin: int, brightness_pct: int) -> dict:
     """
     Create Home Assistant light.turn_on command parameters.
-    
+
     Args:
         room: Room name (e.g., 'living_room')
         color_temp_kelvin: Color temperature in Kelvin (2000-6500)
         brightness_pct: Brightness percentage (0-100)
-    
+
     Returns:
         dict: HA service call parameters
     """
     mireds = 1_000_000 // color_temp_kelvin  # Hue uses mireds, not Kelvin
     entity_id = f"light.{room}_lamp"
-    
+
     return {
         "entity_id": entity_id,
         "color_temp": mireds,
@@ -359,7 +421,7 @@ raise ValueError(
 # Set brightness to 50
 brightness = 50
 
-# Good comment - explains reasoning  
+# Good comment - explains reasoning
 # Fire scenes need medium brightness (50%) to create warm glow
 # without being overwhelming. User testing showed >60% feels too bright.
 brightness = 50
@@ -390,15 +452,15 @@ Every tool function needs:
 def tool_function(param: type) -> return_type:
     """
     One-line summary.
-    
+
     Longer explanation if needed. Explain purpose, not implementation.
-    
+
     Args:
         param: What it is and valid values
-    
+
     Returns:
         What gets returned and its format
-        
+
     Raises:
         Exception: When and why
     """
@@ -486,10 +548,10 @@ Instead of:
 > "I'll add error handling to the API calls."
 
 Say:
-> "I'm adding error handling to the HA API calls. Two approaches: 
+> "I'm adding error handling to the HA API calls. Two approaches:
 > 1) Retry with exponential backoff (handles transient network issues)
 > 2) Fail fast with clear message (simpler, user handles retry)
-> 
+>
 > Going with #2 for now since we're in early prototyping. We can add retries later if network flakiness becomes an issue. Does that reasoning make sense?"
 
 ## Language & Tone
@@ -506,7 +568,7 @@ For multi-step tasks:
 
 ```markdown
 ✅ Step 1: Created base structure
-✅ Step 2: Implemented core logic  
+✅ Step 2: Implemented core logic
 🔄 Step 3: Adding error handling (in progress)
 ⏳ Step 4: Writing tests (next)
 📋 Step 5: Update documentation (queued)
