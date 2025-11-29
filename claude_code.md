@@ -23,8 +23,54 @@ Your context window will be automatically compacted as it approaches its limit, 
 
 - **Never stop tasks early due to token budget concerns**
 - **Complete tasks fully**, even if the end of your budget is approaching
-- **Save progress to SESSION_LOG.md before context refresh** (see Session Logging section)
+- **Save progress to docs/session-log.md before context refresh** (see Session Logging section)
 - Be as persistent and autonomous as possible
+
+## Documentation Organization (CRITICAL)
+
+**All documentation must live in the `docs/` folder.** Never create documentation files in the project root.
+
+### Documentation Structure
+
+```
+docs/
+├── README.md              # Documentation hub and navigation
+├── getting-started.md     # Quick setup guide (5 minutes)
+├── architecture.md        # System design, patterns, data flow
+├── api-reference.md       # Tools, endpoints, schemas
+├── development.md         # Contributing, testing, debugging
+└── session-log.md         # Cross-session progress tracking
+```
+
+### When to Update Docs
+
+After **significant changes** to the system, scan and update relevant docs:
+
+- **API changes** (new tools, parameters) → Update `api-reference.md`
+- **Architecture changes** (new patterns, agents) → Update `architecture.md`
+- **New features** (user-facing) → Update `getting-started.md`
+- **Session progress** (decisions, learnings) → Update `session-log.md`
+- **Code patterns** (conventions, workflows) → Update `development.md`
+
+### Before Creating New Docs
+
+**Always ask the user first** before creating a new documentation file. The current structure should cover most cases:
+- Setup/usage → `getting-started.md`
+- How it works → `architecture.md`
+- API details → `api-reference.md`
+- Development → `development.md`
+- Progress/history → `session-log.md`
+
+### Keeping Docs Fresh
+
+**Documentation goes stale quickly.** When making significant changes:
+
+1. **Identify affected docs** - Which files need updates?
+2. **Update immediately** - Don't defer doc updates to later
+3. **Scan for inconsistencies** - Check other docs for outdated references
+4. **Verify examples** - Ensure code examples still work
+
+**Anti-pattern**: Making code changes without updating docs = stale docs = confusion
 
 ## Git Commit Messages (CRITICAL)
 
@@ -143,9 +189,9 @@ Ask yourself:
 
 ## Session Logging (CRITICAL)
 
-At the **end of every working session**, update `SESSION_LOG.md` in the project root. This is your persistent memory across context window resets.
+At the **end of every working session**, update `docs/session-log.md`. This is your persistent memory across context window resets.
 
-### What Goes in SESSION_LOG.md
+### What Goes in session-log.md
 
 **Format:**
 ```markdown
@@ -241,7 +287,7 @@ Session logs are **training data** for future you and future Claude instances. W
 
 ```bash
 # Start new session with context
-claude -p "Continue work on Phase 1. Here's the last session log: $(cat SESSION_LOG.md | tail -n 50)"
+claude -p "Continue work on Phase 1. Here's the last session log: $(cat docs/session-log.md | tail -n 50)"
 ```
 
 ### Session Log Best Practices
@@ -260,7 +306,8 @@ Maintain clean, predictable structure:
 ```
 project/
 ├── README.md                 # Project overview (you keep this updated)
-├── SESSION_LOG.md           # Your session notes (you maintain this)
+├── docs/
+│   └── session-log.md       # Your session notes (you maintain this)
 ├── requirements.txt         # Python dependencies
 ├── .env                     # API keys, tokens (git-ignored)
 ├── .gitignore              # Comprehensive ignore file
@@ -516,7 +563,7 @@ When something doesn't work:
 2. **Isolate the problem** - Is it the agent? The tool? The API?
 3. **Test in isolation** - Can you call the tool directly?
 4. **Add temporary debug logging** - But remove it before committing
-5. **Document in SESSION_LOG.md** - "Hit this issue, here's how I fixed it"
+5. **Document in docs/session-log.md** - "Hit this issue, here's how I fixed it"
 
 ## Permission Management
 
@@ -580,7 +627,7 @@ This helps the user see progress, especially in longer sessions.
 
 Before context compaction or user signing off:
 
-- [ ] Update SESSION_LOG.md with today's work
+- [ ] Update docs/session-log.md with today's work
 - [ ] Commit all working code with good messages
 - [ ] Update README.md if significant features added
 - [ ] Note any blockers or questions for next session
@@ -602,7 +649,7 @@ Make every commit, comment, and session log entry something you'd be proud to sh
 
 **Commit Format:** `type(scope): description`
 
-**Session Log:** Update at end of every session in `SESSION_LOG.md`
+**Session Log:** Update at end of every session in `docs/session-log.md`
 
 **Avoid:** Over-engineering, hardcoding, silent failures, cryptic messages
 
