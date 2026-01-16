@@ -2,37 +2,24 @@
 
 AI prompts and skills I use for various workflows.
 
-## Skills vs Prompts
+## About the Skills Here
 
-**Skills** are living instructions that evolve based on how I actually use them. I treat skills as procedural memory - they learn from my usage patterns, get updated when something works better, and reflect how I naturally work rather than how I thought I'd work.
+The skills in this repo are **static snapshots**—this is how Anthropic intends Claude Code skills to work. You define instructions, save them as a slash command, and use them.
 
-**Prompts** are more static - copy-paste templates for specific workflows. Useful starting points, but they don't evolve with you.
+I use skills a bit differently. My actual workflow treats skills as living documents that learn from usage: I keep session transcripts, review what worked vs what I corrected, and update skills based on patterns. The skills evolve over time based on how I actually use them, not how I thought I'd use them.
 
-## My Approach to Skills
+**The skills shared here don't include that learning layer**—that requires a different workflow (transcript review, example logging, regular updates). What you're getting is a functional snapshot of what my skills do right now, without the history of how they got there or the infrastructure that keeps them evolving.
 
-I don't pre-design elaborate frameworks. Instead:
+If you're curious about the learning approach:
+- Keep session transcripts so you can review them later
+- Add a "recent examples" log to your skill file
+- Update skills as part of using them (Use → Notice → Update → Repeat)
 
-1. Start with a rough skill that captures intent
-2. Use it in real work
-3. Notice what's missing or awkward
-4. Update based on what actually happened
-
-Skills in this repo are **snapshots** - frozen moments of skills that have evolved through actual use. They're useful starting points, but the real value comes from adapting them to your own workflow and letting them learn from how you use them.
-
-### If you want to build skills that learn from you:
-
-- **Keep session transcripts** - Save your AI conversations so you can review them
-- **Keep the skill simple** - Don't over-engineer upfront; let complexity emerge from actual needs
-- **Add a log of recent examples to the skill itself** - Include a section in your skill file with recent uses, what worked, what you corrected
-- **Update as part of your workflow** - After using a skill, spend 30 seconds noting what to change. Make updating the skill part of using the skill.
-
-The pattern: Use → Notice → Update → Repeat. The skill gets better because it learns from your actual behavior, not your theories about how you'll work.
+But for most people, just using these as static skills works fine.
 
 ## What's Here
 
 ### `skills/`
-
-Living skills that evolve with use:
 
 - **paper-digest.md** - Translates academic papers into practical one-pagers focused on what matters for your work
 
