@@ -1,12 +1,12 @@
-# /digest-paper
+# digest-paper
 
 Translates academic papers into practical one-pagers. The goal isn't to summarize—it's to answer "What does this mean for ME and what I'm building?" If no project context exists, ask what the user is working on first.
 
-## Usage
+## How to Use
 
-Add as a slash command in Claude Code: `~/.claude/commands/digest-paper.md`
+**Copy this entire file** to `~/.claude/commands/digest-paper.md`, then run with `/digest-paper`.
 
-Run with: `/digest-paper [paper URL or title]`, or just ask it questions about research topics.
+Everything below the `---` is what Claude sees when you invoke the skill.
 
 ---
 

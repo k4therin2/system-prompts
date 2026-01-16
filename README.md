@@ -21,7 +21,7 @@ But for most people, just using these as static skills works fine.
 
 ### `skills/`
 
-- **paper-digest.md** - Translates academic papers into practical one-pagers focused on what matters for your work
+- **digest-paper.md** - Translates academic papers into practical one-pagers focused on what matters for your work
 
 ### `prompts/`
 
