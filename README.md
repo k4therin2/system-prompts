@@ -25,14 +25,30 @@ But for most people, just using these as static skills works fine.
 
 ### `prompts/`
 
-Static agent prompts for specific workflows:
+Agent prompts generalized from my December 2025 multi-agent automation experiment. These work standalone in Claude Code or as part of a pipeline.
 
-- **business-analyst-agent.md** - Evaluates feature proposals, prioritizes work, hands off to PM
-- **requirements-reviewer.md** - Turns messy ideas into testable requirements
-- **project-manager-agent.md** - Manages roadmaps and coordinates parallel work
-- **tdd-developer** - Executes work from roadmaps using test-driven development
+**The Pipeline (idea → production):**
 
-The BA → Requirements → PM → TDD Developer pipeline is demonstrated in my [Agentic AI Workshop](https://github.com/k4therin2/agentic-ai-workshop).
+```
+User idea → requirements-reviewer → business-analyst → project-manager → tdd-developer → qa-engineer
+```
+
+| Agent | What It Does |
+|-------|--------------|
+| **requirements-reviewer.md** | Turns messy ideas into testable REQ-### requirements |
+| **business-analyst.md** | Prioritizes requirements, RICE scoring, Now/Next/Later |
+| **project-manager.md** | Creates and maintains roadmaps, triages blockers |
+| **tdd-developer.md** | Implements work from roadmaps using TDD |
+| **qa-engineer.md** | Quality gates, test strategy, builds tooling |
+
+**Standalone (use when needed):**
+
+| Agent | What It Does |
+|-------|--------------|
+| **incident-manager.md** | Investigates issues, RCA, verification before closure |
+| **system-analyst.md** | Context budgets, anti-pattern detection, design reviews |
+
+**New to AI agents?** Start with the simplified versions in my [Agentic AI Workshop](https://github.com/k4therin2/agentic-ai-workshop) (3 agents, 90-minute workshop).
 
 ### `claude_code.md`
 
